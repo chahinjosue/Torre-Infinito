@@ -215,11 +215,51 @@ input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-
 <body>
   <div id="root"></div>
 
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <!-- React + ReactDOM -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <!-- Babel standalone to transpile JSX in-browser -->
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script>
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDCY17YOuueCieacUzgdqQ-9GQSK3unVq0",
+      authDomain: "torre-infinito-ed846.firebaseapp.com",
+      databaseURL: "https://torre-infinito-ed846-default-rtdb.firebaseio.com",
+      projectId: "torre-infinito-ed846",
+      storageBucket: "torre-infinito-ed846.firebasestorage.app",
+      messagingSenderId: "729413718197",
+      appId: "1:729413718197:web:db1105238379f9879d2efc"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const DATA_REF = 'torre-infinito/state';
+
+    // Save to Firebase
+    window.fbSave = function(data) {
+      db.ref(DATA_REF).set(data);
+    };
+
+    // Listen for realtime changes
+    window.fbListen = function(callback) {
+      db.ref(DATA_REF).on('value', (snapshot) => {
+        const val = snapshot.val();
+        if (val) callback(val);
+      });
+    };
+
+    // Load once
+    window.fbLoad = function(callback) {
+      db.ref(DATA_REF).once('value').then((snapshot) => {
+        const val = snapshot.val();
+        callback(val);
+      });
+    };
+  </script>
 
   <script type="text/babel" data-presets="react">
 // React loaded via CDN
@@ -460,21 +500,23 @@ function globalStats(sections) {
   return {total:t,done:d,pct:Math.round(weightedPct),budget:b,paid:p,secs:sections.length};
 }
 
+function migrateState(s) {
+  for (const sec of s.sections) {
+    if (!sec.icon) sec.icon = 'home';
+    if (sec.weight === undefined) sec.weight = 10;
+    for (const g of sec.groups) for (const it of g.items) {
+      if (it.budget===undefined) it.budget=null;
+      if (it.paid===undefined) it.paid=null;
+    }
+  }
+  return s;
+}
+
 function loadState() {
+  // Return defaults — Firebase will override via fbListen
   try {
     const r = localStorage.getItem(SK);
-    if (r) {
-      const s = JSON.parse(r);
-      for (const sec of s.sections) {
-        if (!sec.icon) sec.icon = 'home';
-        if (sec.weight === undefined) sec.weight = 10;
-        for (const g of sec.groups) for (const it of g.items) {
-          if (it.budget===undefined) it.budget=null;
-          if (it.paid===undefined) it.paid=null;
-        }
-      }
-      return s;
-    }
+    if (r) return migrateState(JSON.parse(r));
   } catch {}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
@@ -1027,10 +1069,36 @@ function App() {
   const [lastMovedSec, setLastMovedSec] = useState(null); // {id, dir}
   const toastRef = useRef(null);
 
-  // Persist
+  // Sync indicator
+  const [synced, setSynced] = useState(false);
+
+  // Load from Firebase on mount, then listen for changes
   useEffect(() => {
-    try { localStorage.setItem(SK, JSON.stringify({ sections })); } catch {}
-  }, [sections]);
+    window.fbLoad((val) => {
+      if (val && val.sections) {
+        setSections(migrateState(val).sections);
+      }
+      setSynced(true);
+    });
+    window.fbListen((val) => {
+      if (val && val.sections) {
+        setSections(prev => {
+          // Only update if data actually changed (avoid feedback loops)
+          const incoming = JSON.stringify(migrateState(val).sections);
+          const current  = JSON.stringify(prev);
+          return incoming !== current ? migrateState(val).sections : prev;
+        });
+      }
+    });
+  }, []);
+
+  // Save to Firebase + localStorage whenever sections change
+  useEffect(() => {
+    if (!synced) return; // Don't save before first load
+    const data = { sections };
+    try { localStorage.setItem(SK, JSON.stringify(data)); } catch {}
+    window.fbSave(data);
+  }, [sections, synced]);
 
   const showToast = useCallback((msg) => {
     setToast(msg);
@@ -1180,7 +1248,20 @@ function App() {
           <div className="hd-inner">
             <div className="hd-top">
               <div className="hd-titles">
-                <div className="hd-eyebrow">Proyecto · Amueblamiento</div>
+                <div className="hd-eyebrow" style={{display:'flex',alignItems:'center',gap:6}}>
+              Proyecto · Amueblamiento
+              <span style={{
+                display:'inline-flex',alignItems:'center',gap:3,
+                fontSize:9,fontWeight:600,letterSpacing:.5,
+                color: synced ? '#00d67a' : '#ffb341',
+                background: synced ? 'rgba(0,214,122,0.1)' : 'rgba(255,179,65,0.1)',
+                border: `1px solid ${synced ? 'rgba(0,214,122,0.2)' : 'rgba(255,179,65,0.2)'}`,
+                borderRadius:50,padding:'1px 6px'
+              }}>
+                <span style={{width:5,height:5,borderRadius:'50%',background: synced ? '#00d67a' : '#ffb341',display:'inline-block'}}/>
+                {synced ? 'Sincronizado' : 'Conectando…'}
+              </span>
+            </div>
                 <div className="hd-title">Apartamento, <span>Torre Infinito</span></div>
               </div>
               <div className="ring-block">
