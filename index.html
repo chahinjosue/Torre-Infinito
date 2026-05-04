@@ -1069,35 +1069,49 @@ function App() {
   const [lastMovedSec, setLastMovedSec] = useState(null); // {id, dir}
   const toastRef = useRef(null);
 
-  // Sync indicator
+  // Sync state
   const [synced, setSynced] = useState(false);
+  const isRemoteRef = useRef(false);  // true when update came from Firebase
+  const saveTimerRef = useRef(null);
 
-  // Load from Firebase on mount, then listen for changes
+  // Load from Firebase on mount, then listen for realtime changes
   useEffect(() => {
+    // Load once first
     window.fbLoad((val) => {
       if (val && val.sections) {
+        isRemoteRef.current = true;
         setSections(migrateState(val).sections);
       }
       setSynced(true);
     });
+
+    // Then listen for changes from other devices
     window.fbListen((val) => {
-      if (val && val.sections) {
-        setSections(prev => {
-          // Only update if data actually changed (avoid feedback loops)
-          const incoming = JSON.stringify(migrateState(val).sections);
-          const current  = JSON.stringify(prev);
-          return incoming !== current ? migrateState(val).sections : prev;
-        });
-      }
+      if (!val || !val.sections) return;
+      const incoming = JSON.stringify(val.sections);
+      setSections(prev => {
+        if (JSON.stringify(prev) === incoming) return prev; // no change
+        isRemoteRef.current = true;
+        return migrateState(val).sections;
+      });
     });
   }, []);
 
-  // Save to Firebase + localStorage whenever sections change
+  // Save to Firebase + localStorage on local changes only
   useEffect(() => {
-    if (!synced) return; // Don't save before first load
-    const data = { sections };
-    try { localStorage.setItem(SK, JSON.stringify(data)); } catch {}
-    window.fbSave(data);
+    if (!synced) return;
+    if (isRemoteRef.current) {
+      // This change came from Firebase — don't save back
+      isRemoteRef.current = false;
+      return;
+    }
+    // Debounce saves by 600ms to batch rapid changes
+    clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      const data = { sections };
+      try { localStorage.setItem(SK, JSON.stringify(data)); } catch {}
+      window.fbSave(data);
+    }, 600);
   }, [sections, synced]);
 
   const showToast = useCallback((msg) => {
