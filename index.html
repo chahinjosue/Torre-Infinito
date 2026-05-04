@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Torre Infinito — Amueblamiento</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; background: #0a0a0f; }
+    #root { min-height: 100dvh; }
+    
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+body{font-family:'Geist',-apple-system,sans-serif;background:#0a0a0f;color:#f0f0f5;min-height:100dvh;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch;}
+::-webkit-scrollbar{width:0;}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;}
+
+.app{max-width:600px;margin:0 auto;padding-bottom:100px;}
+
+/* HEADER */
+.hd{background:#0a0a0f;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.05);}
+.hd-inner{padding:14px 16px 12px;}
+.hd-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.hd-titles{flex:1;min-width:0;}
+.hd-eyebrow{font-size:9.5px;font-weight:500;letter-spacing:1.8px;text-transform:uppercase;color:#4a4a60;margin-bottom:1px;}
+.hd-title{font-size:17px;font-weight:700;letter-spacing:-0.4px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hd-title span{background:linear-gradient(90deg,#4f7fff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ring-block{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.ring-wrap{width:46px;height:46px;position:relative;flex-shrink:0;}
+.ring-svg{display:block;transform:rotate(-90deg);}
+.ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.pct-col{display:flex;flex-direction:column;}
+.pct-big{font-size:26px;font-weight:800;letter-spacing:-1.5px;color:#fff;line-height:1;}
+.pct-sub{font-size:10px;color:#8585a0;margin-top:2px;}
+.prog-bar{height:3px;background:#1c1c27;border-radius:3px;overflow:hidden;margin-bottom:10px;}
+.prog-fill{height:100%;background:linear-gradient(90deg,#4f7fff,#a855f7);border-radius:3px;transition:width .7s cubic-bezier(.4,0,.2,1);}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.metric{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.05);border-radius:10px;padding:7px 8px;text-align:center;}
+.metric-lbl{font-size:8px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#4a4a60;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.metric-val{font-size:13px;font-weight:700;color:#fff;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.metric-val.g{color:#00d67a;}
+.metric-val.b{color:#4f7fff;}
+.metric-val.r{color:#ff4d6a;}
+
+/* SECTION LABEL */
+.sec-divider{padding:12px 16px 8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#4a4a60;}
+
+/* SECTION CARD */
+.sec-card{background:#16161f;border:1px solid rgba(255,255,255,0.08);border-radius:16px;margin:0 16px 10px;overflow:visible;transition:border-color .2s;}
+.sec-card.open{border-color:rgba(168,85,247,0.5);}
+.sec-card.complete{border-color:rgba(0,214,122,0.25);}
+.sec-hdr{display:flex;align-items:center;padding:16px;gap:12px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;border-radius:16px 16px 0 0;}
+.sec-card.open .sec-hdr{background:linear-gradient(90deg,rgba(79,127,255,0.14),rgba(168,85,247,0.1) 60%,transparent);border-radius:16px 16px 0 0;}
+.sec-icon{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.sec-card.open .sec-icon{background:linear-gradient(135deg,rgba(79,127,255,0.22),rgba(168,85,247,0.22));border-color:rgba(168,85,247,0.35);}
+.sec-card.complete .sec-icon{background:rgba(0,214,122,0.12);border-color:rgba(0,214,122,0.2);}
+.sec-meta{flex:1;min-width:0;}
+.sec-name{font-size:15px;font-weight:600;letter-spacing:-.2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;transition:all .2s;}
+.sec-card.open .sec-name{background:linear-gradient(90deg,#818cf8,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sec-sub{font-size:12px;color:#4a4a60;}
+.sec-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.mini-ring{position:relative;width:38px;height:38px;}
+.mini-ring-svg{display:block;transform:rotate(-90deg);}
+.mini-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#8585a0;}
+.sec-dots-btn{background:none;border:none;cursor:pointer;padding:6px 5px;border-radius:8px;color:#4a4a60;display:flex;flex-direction:column;align-items:center;gap:2.5px;transition:color .15s,background .15s;}
+.sec-dots-btn:hover{color:#8585a0;background:rgba(255,255,255,0.07);}
+.dot{width:3.5px;height:3.5px;border-radius:50%;background:currentColor;display:block;}
+.sec-bar{height:2px;background:#1c1c27;margin:0 16px 0;border-radius:2px;overflow:hidden;}
+.sec-bar-fill{height:100%;background:linear-gradient(90deg,#4f7fff,#a855f7);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.sec-budget-strip{display:flex;gap:8px;padding:10px 16px 12px;flex-wrap:wrap;}
+.sec-bud-chip{display:flex;align-items:center;gap:6px;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:5px 10px;}
+.sec-bud-chip-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.sec-bud-chip-lbl{font-size:10px;font-weight:500;color:#8585a0;text-transform:uppercase;letter-spacing:.5px;}
+.sec-bud-chip-val{font-size:13px;font-weight:700;letter-spacing:-.3px;}
+
+
+/* SECTION BODY */
+.sec-body{border-top:1px solid rgba(255,255,255,0.05);}
+.sub-lbl-row{display:flex;align-items:center;padding:14px 16px 6px;gap:8px;}
+.sub-lbl{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:#4a4a60;flex:1;}
+.sub-lbl-btn{background:none;border:none;cursor:pointer;padding:3px 7px;border-radius:6px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;transition:background .15s,color .15s;}
+.sub-lbl-btn.add{color:#4f7fff;background:rgba(79,127,255,0.08);}
+.sub-lbl-btn.add:hover{background:rgba(79,127,255,0.18);}
+.sub-lbl-btn.del{color:#4a4a60;}
+.sub-lbl-btn.del:hover{color:#ff4d6a;background:rgba(255,77,106,0.12);}
+.add-group-row{display:flex;gap:8px;padding:8px 16px 10px;background:#111118;border-top:1px solid rgba(255,255,255,0.05);}
+.add-group-input{flex:1;background:#16161f;border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-family:'Geist',-apple-system,sans-serif;font-size:16px;color:#f0f0f5;padding:9px 12px;outline:none;}
+.add-group-input::placeholder{color:#4a4a60;}
+.add-group-btn{background:rgba(168,85,247,0.15);border:none;border-radius:10px;color:#a855f7;font-family:'Geist',-apple-system,sans-serif;font-size:12px;font-weight:600;padding:0 14px;cursor:pointer;}
+
+/* ITEM */
+.item-outer{border-bottom:1px solid rgba(255,255,255,0.05);}
+.item-outer:last-of-type{border-bottom:none;}
+.item-row{display:flex;align-items:flex-start;padding:12px 16px;gap:12px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .12s;}
+.item-row:hover{background:rgba(255,255,255,0.04);}
+.item-handle{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;flex-shrink:0;}
+.handle-btn{background:none;border:none;cursor:pointer;padding:5px 4px;border-radius:6px;color:#4a4a60;display:flex;flex-direction:column;align-items:center;gap:2.5px;transition:color .15s,background .15s;}
+.handle-btn:hover{color:#8585a0;background:rgba(255,255,255,0.07);}
+.item-body{flex:1;min-width:0;}
+.item-name{font-size:13.5px;font-weight:400;color:#f0f0f5;line-height:1.4;transition:color .2s;}
+.item-row.done .item-name{color:#4a4a60;text-decoration:line-through;text-decoration-color:#4a4a60;}
+.item-prices{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;align-items:center;}
+.pf{display:flex;align-items:center;gap:5px;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:4px 9px;transition:border-color .15s,box-shadow .15s;}
+.pf:focus-within{background:rgba(255,255,255,0.07);border-color:rgba(79,127,255,0.4);box-shadow:0 0 0 3px rgba(79,127,255,0.08);}
+.pf-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;}
+.pf-tag.b{color:#4f7fff;}
+.pf-tag.p{color:#00d67a;}
+.pf-cur{font-size:11px;color:#4a4a60;font-weight:500;}
+.pf-input{border:none;background:transparent;font-family:'Geist',-apple-system,sans-serif;font-size:16px;font-weight:600;color:#f0f0f5;width:86px;outline:none;padding:0;transform:scale(0.75);transform-origin:left center;margin-right:-18px;}
+.pf-input::placeholder{color:#4a4a60;font-weight:400;}
+.diff-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:50px;}
+.diff-badge.save{background:rgba(0,214,122,0.12);color:#00d67a;}
+.diff-badge.over{background:rgba(255,77,106,0.12);color:#ff4d6a;}
+.chk{width:20px;height:20px;border-radius:6px;border:1.5px solid #4a4a60;background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);}
+.item-row.done .chk{background:#00d67a;border-color:#00d67a;transform:scale(1.05);}
+
+/* ADD ITEM */
+.add-zone{padding:8px 16px 10px;background:#111118;border-top:1px solid rgba(255,255,255,0.05);}
+.add-row{display:flex;gap:8px;}
+.add-input{flex:1;background:#16161f;border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-family:'Geist',-apple-system,sans-serif;font-size:16px;color:#f0f0f5;padding:10px 12px;outline:none;transition:border-color .15s,box-shadow .15s;}
+.add-input::placeholder{color:#4a4a60;}
+.add-input:focus{border-color:rgba(79,127,255,0.5);box-shadow:0 0 0 3px rgba(79,127,255,0.1);}
+.add-btn{background:#4f7fff;border:none;border-radius:10px;color:#fff;font-family:'Geist',-apple-system,sans-serif;font-size:13px;font-weight:600;padding:0 16px;cursor:pointer;transition:opacity .15s;}
+.add-btn:hover{opacity:.88;}
+
+/* FAB */
+.weights-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
+.weights-sheet{background:#16161f;border:1px solid rgba(255,255,255,0.08);border-radius:24px 24px 0 0;width:100%;max-width:600px;padding:0 20px 40px;max-height:90dvh;overflow-y:auto;animation:sheetup .28s cubic-bezier(.4,0,.2,1);}
+.weights-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.weights-row:last-of-type{border-bottom:none;}
+.weights-icon{width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.weights-name{flex:1;font-size:13px;font-weight:500;color:#f0f0f5;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.weights-bar-wrap{width:80px;height:4px;background:#1c1c27;border-radius:4px;overflow:hidden;flex-shrink:0;}
+.weights-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#4f7fff,#a855f7);transition:width .3s ease;}
+.weights-pct{font-size:13px;font-weight:700;color:#f0f0f5;min-width:34px;text-align:right;flex-shrink:0;}
+.weights-input{width:52px;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:7px;font-family:'Geist',-apple-system,sans-serif;font-size:14px;font-weight:700;color:#f0f0f5;padding:5px 8px;outline:none;text-align:center;-webkit-text-fill-color:#f0f0f5;transition:border-color .15s;}
+.weights-input:focus{border-color:rgba(168,85,247,0.5);}
+.weights-pct-sign{font-size:13px;color:#8585a0;flex-shrink:0;}
+.weights-total{display:flex;justify-content:space-between;align-items:center;padding:12px 0 0;margin-top:4px;border-top:1px solid rgba(255,255,255,0.08);}
+.weights-total-lbl{font-size:12px;color:#8585a0;}
+.weights-total-val{font-size:15px;font-weight:700;}
+.weights-total-val.ok{color:#00d67a;}
+.weights-total-val.err{color:#ff4d6a;}
+.weights-btn-row{display:flex;gap:10px;margin-top:14px;}
+.fab-settings{position:fixed;bottom:24px;left:20px;width:48px;height:48px;background:linear-gradient(135deg,rgba(168,85,247,0.25),rgba(79,127,255,0.25));border:1px solid rgba(168,85,247,0.45);color:#c084fc;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(168,85,247,0.25),0 2px 8px rgba(0,0,0,0.4);z-index:200;transition:all .2s cubic-bezier(.34,1.56,.64,1);-webkit-tap-highlight-color:transparent;}
+.fab-settings:hover{transform:scale(1.08);background:linear-gradient(135deg,rgba(168,85,247,0.4),rgba(79,127,255,0.4));box-shadow:0 6px 28px rgba(168,85,247,0.4),0 2px 8px rgba(0,0,0,0.4);color:#e9d5ff;}
+.fab{position:fixed;bottom:24px;right:20px;background:linear-gradient(135deg,#4f7fff,#a855f7);color:#fff;border:none;border-radius:50px;padding:14px 22px;font-family:'Geist',-apple-system,sans-serif;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(79,127,255,0.35),0 2px 8px rgba(0,0,0,0.4);z-index:200;transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent;}
+.fab:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(79,127,255,0.45),0 4px 12px rgba(0,0,0,0.4);}
+
+/* CONTEXT MENU */
+.ctx-menu{position:fixed;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:4px;z-index:500;min-width:148px;box-shadow:0 8px 32px rgba(0,0,0,0.65);animation:menuPop .15s cubic-bezier(.34,1.56,.64,1);}
+@keyframes menuPop{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
+.ctx-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;font-family:'Geist',-apple-system,sans-serif;font-size:13px;font-weight:500;color:#f0f0f5;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .12s;}
+.ctx-item:hover{background:rgba(255,255,255,0.07);}
+.ctx-item.danger{color:#ff4d6a;}
+.ctx-item.danger:hover{background:rgba(255,77,106,0.12);}
+.ctx-div{height:1px;background:rgba(255,255,255,0.05);margin:3px 6px;}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
+.sheet{background:#16161f;border:1px solid rgba(255,255,255,0.08);border-radius:24px 24px 0 0;width:100%;max-width:600px;padding:0 20px 40px;animation:sheetup .28s cubic-bezier(.4,0,.2,1);}
+@keyframes sheetup{from{transform:translateY(80px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.sheet-pill{width:40px;height:4px;background:rgba(255,255,255,0.08);border-radius:4px;margin:14px auto 22px;}
+.sheet-title{font-size:18px;font-weight:700;letter-spacing:-.4px;color:#fff;margin-bottom:16px;}
+.sheet-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#8585a0;margin-bottom:6px;}
+.sheet-input{width:100%;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-family:'Geist',-apple-system,sans-serif;font-size:16px;color:#f0f0f5;padding:13px 14px;outline:none;margin-bottom:16px;transition:border-color .15s,box-shadow .15s;}
+.sheet-input:focus{border-color:rgba(168,85,247,0.5);box-shadow:0 0 0 3px rgba(168,85,247,0.1);}
+.icon-picker-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:#8585a0;margin-bottom:8px;}
+.icon-search-wrap{position:relative;margin-bottom:10px;}
+.icon-search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:#4a4a60;pointer-events:none;}
+.icon-search{width:100%;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-family:'Geist',-apple-system,sans-serif;font-size:16px;color:#f0f0f5;padding:9px 12px 9px 32px;outline:none;transition:border-color .15s;}
+.icon-search::placeholder{color:#4a4a60;}
+.icon-search:focus{border-color:rgba(168,85,247,0.5);}
+.icon-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-height:180px;overflow-y:auto;padding-right:2px;margin-bottom:14px;}
+.icon-btn{aspect-ratio:1;border-radius:9px;background:rgba(255,255,255,0.04);border:1.5px solid transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8585a0;transition:all .15s;padding:0;}
+.icon-btn:hover{background:rgba(255,255,255,0.07);color:#f0f0f5;border-color:rgba(255,255,255,0.08);}
+.icon-btn.sel{background:linear-gradient(135deg,rgba(79,127,255,0.2),rgba(168,85,247,0.2));border-color:rgba(168,85,247,0.6);color:#fff;}
+.icon-preview{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;margin-bottom:14px;}
+.icon-preview-box{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(79,127,255,0.15),rgba(168,85,247,0.15));border:1px solid rgba(168,85,247,0.25);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+.icon-preview-text{font-size:13px;color:#8585a0;}
+.icon-preview-text strong{color:#f0f0f5;font-weight:500;display:block;}
+.sheet-btns{display:flex;gap:10px;}
+.btn-cancel{flex:1;background:#1c1c27;border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#8585a0;font-family:'Geist',-apple-system,sans-serif;font-weight:600;font-size:15px;padding:14px;cursor:pointer;}
+.btn-confirm{flex:2;background:linear-gradient(135deg,#4f7fff,#a855f7);border:none;border-radius:10px;color:#fff;font-family:'Geist',-apple-system,sans-serif;font-weight:700;font-size:15px;padding:14px;cursor:pointer;}
+
+/* TOAST */
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(0);background:#1c1c27;border:1px solid rgba(255,255,255,0.08);color:#f0f0f5;border-radius:50px;padding:9px 20px;font-size:12.5px;font-weight:500;z-index:400;pointer-events:none;box-shadow:0 4px 24px rgba(0,0,0,0.4);white-space:nowrap;max-width:calc(100vw - 40px);}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px;color:#4a4a60;font-size:14px;}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.5;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.new-item{animation:fadeUp .2s ease forwards;}
+@keyframes flashUp{
+  0%  {background:rgba(79,127,255,0);transform:translateY(0);}
+  25% {background:rgba(79,127,255,0.18);transform:translateY(-3px);}
+  75% {background:rgba(79,127,255,0.12);transform:translateY(-1px);}
+  100%{background:rgba(79,127,255,0);transform:translateY(0);}
+}
+@keyframes flashDown{
+  0%  {background:rgba(168,85,247,0);transform:translateY(0);}
+  25% {background:rgba(168,85,247,0.18);transform:translateY(3px);}
+  75% {background:rgba(168,85,247,0.12);transform:translateY(1px);}
+  100%{background:rgba(168,85,247,0);transform:translateY(0);}
+}
+.item-flash-up{animation:flashUp .4s cubic-bezier(.34,1.56,.64,1) forwards;}
+.item-flash-down{animation:flashDown .4s cubic-bezier(.34,1.56,.64,1) forwards;}
+.sec-flash-up{animation:flashUp .45s cubic-bezier(.34,1.56,.64,1) forwards;}
+.sec-flash-down{animation:flashDown .45s cubic-bezier(.34,1.56,.64,1) forwards;}
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + ReactDOM -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Babel standalone to transpile JSX in-browser -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel" data-presets="react">
+// React loaded via CDN
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ══════════════════════════════════════════════
+   STYLES
+══════════════════════════════════════════════ */
+// CSS injected via style tag in HTML
+const css = '';
+
+/* ══════════════════════════════════════════════
+   ICON LIBRARY
+══════════════════════════════════════════════ */
+const ICONS = [
+  ['sofa','Sofá','M2 9a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M6 18v2 M18 18v2 M2 14h20'],
+  ['tv','Televisor','M21 3H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z M7 21h10'],
+  ['laptop','Laptop','M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4'],
+  ['bed','Cama','M2 4v16 M2 8h18a2 2 0 0 1 2 2v10 M2 17h20 M6 8v9'],
+  ['bath','Baño','M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5 M5 14h14'],
+  ['utensils','Cocina','M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2 M7 2v20 M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3z'],
+  ['coffee','Café','M17 8h1a4 4 0 1 1 0 8h-1 M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z'],
+  ['chef-hat','Chef','M6 13.87A4 4 0 0 1 7.41 6a5 5 0 0 1 9.18 0A4 4 0 0 1 18 13.87V21H6z M6 17h12'],
+  ['refrigerator','Refrigerador','M5 2h14a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z M5 10h14 M9 5v5'],
+  ['shirt','Ropa','M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z'],
+  ['package','Caja','M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z M3.27 6.96 12 12.01l8.73-5.05 M12 22.08V12'],
+  ['lamp','Lámpara','M8 2h8l4 10H4z M12 12v6 M8 22v-2c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2'],
+  ['lightbulb','Foco','M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5 M9 18h6 M10 22h4'],
+  ['plug','Enchufe','M12 22v-5 M9 7V2 M15 7V2 M6 13V8h12v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z'],
+  ['zap','Eléctrico','M13 2 3 14h9l-1 8 10-12h-9z'],
+  ['wrench','Herramientas','M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z'],
+  ['droplets','Agua','M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z'],
+  ['flame','Fuego','M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z'],
+  ['thermometer','Temperatura','M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z'],
+  ['monitor','Monitor','M20 3H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1z M8 21h8 M12 17v4'],
+  ['smartphone','Celular','M17 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z M12 18h.01'],
+  ['book','Libro','M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20'],
+  ['heart','Favorito','M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z'],
+  ['star','Estrella','M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z'],
+  ['gift','Regalo','M20 12v10H4V12 M2 7h20v5H2z M12 22V7 M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z'],
+  ['shopping-cart','Compras','M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6 M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm12 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z'],
+  ['shield','Seguridad','M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'],
+  ['bell','Campana','M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9 M13.73 21a2 2 0 0 1-3.46 0'],
+  ['calendar','Calendario','M8 2v4 M16 2v4 M3 10h18 M3 6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z'],
+  ['clock','Reloj','M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 6v6l4 2'],
+  ['map-pin','Ubicación','M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z M12 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z'],
+  ['sun','Exterior','M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z M12 1v2 M12 21v2 M4.22 4.22l1.42 1.42 M18.36 18.36l1.42 1.42 M1 12h2 M21 12h2'],
+  ['moon','Noche','M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z'],
+  ['trash-2','Eliminar','M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2 M10 11v6 M14 11v6'],
+  ['lock','Cerradura','M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2z M7 11V7a5 5 0 0 1 10 0v4'],
+  ['home','Hogar','M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10'],
+  ['leaf','Planta','M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z'],
+  ['wind','Aire','M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2 M9.6 4.6A2 2 0 1 1 11 8H2 M12.6 19.4A2 2 0 1 0 14 16H2'],
+  ['hanger','Perchas','M20.38 18H3.62a1 1 0 0 1-.7-1.71L12 7.3l9.08 9a1 1 0 0 1-.7 1.7z M12 2a3 3 0 0 0-3 3c0 2 3 4 3 4s3-2 3-4a3 3 0 0 0-3-3z'],
+  ['music','Música','M9 18V5l12-2v13 M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'],
+  ['key','Llave','M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4'],
+  ['tag','Etiqueta','M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z M7 7h.01'],
+  ['building-2','Edificio','M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18z M10 6h4 M10 10h4 M10 14h4 M10 18h4'],
+  ['wallet','Billetera','M21 12V7H5a2 2 0 0 1 0-4h14v4 M3 5v14a2 2 0 0 0 2 2h16v-5 M18 12a2 2 0 0 0 0 4h4v-4z'],
+  ['camera','Cámara','M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'],
+  ['sparkles','Especial','M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z'],
+];
+
+function IconSvg({ id, size = 16, color = 'currentColor' }) {
+  const ic = ICONS.find(x => x[0] === id) || ICONS.find(x => x[0] === 'home');
+  if (!ic) return null;
+  const segs = ic[2].split(' M ');
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24">
+      {segs.map((seg, i) => (
+        <path key={i} d={i === 0 ? seg : 'M ' + seg}
+          fill="none" stroke={color} strokeWidth="1.8"
+          strokeLinecap="round" strokeLinejoin="round" />
+      ))}
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   DEFAULT DATA
+══════════════════════════════════════════════ */
+const DEFAULTS = {sections:[
+  {id:'s1',icon:'sofa',weight:10,name:'Sala',groups:[
+    {label:'Esenciales',items:[
+      {id:'i1',name:'Sillón principal',done:false,budget:null,paid:null},
+      {id:'i2',name:'Mesa de centro',done:false,budget:null,paid:null},
+      {id:'i3',name:'Alfombra',done:false,budget:null,paid:null},
+      {id:'i4',name:'Mueble para TV',done:false,budget:null,paid:null},
+      {id:'i5',name:'Televisor (Sala)',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i6',name:'Mesa alta (auxiliar/decorativa)',done:false,budget:null,paid:null},
+      {id:'i7',name:'Adorno decorativo (arte, planta, escultura)',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s2',icon:'laptop',weight:10,name:'Estudio / Oficina',groups:[
+    {label:'Esenciales',items:[
+      {id:'i8',name:'Escritorio',done:false,budget:null,paid:null},
+      {id:'i9',name:'Silla de escritorio',done:false,budget:null,paid:null},
+      {id:'i10',name:'Sillón / sofá cama',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i11',name:'Repisas',done:false,budget:null,paid:null},
+      {id:'i12',name:'Alfombra',done:false,budget:null,paid:null},
+      {id:'i13',name:'Recibidor',done:false,budget:null,paid:null},
+      {id:'i14',name:'Espejo',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s3',icon:'bed',weight:10,name:'Cuarto',groups:[
+    {label:'Esenciales',items:[
+      {id:'i15',name:'Mesas de noche',done:false,budget:null,paid:null},
+      {id:'i16',name:'Respaldo / cabecera de cama',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i17',name:'Televisor (Cuarto)',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s4',icon:'chef-hat',weight:10,name:'Cocina (Mobiliario)',groups:[
+    {label:'Esenciales',items:[
+      {id:'i18',name:'2 sillas / butacas para desayunador',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s5',icon:'utensils',weight:10,name:'Cocina & Comedor',groups:[
+    {label:'Esenciales',items:[
+      {id:'i19',name:'Cubiertos (tenedores, cucharas, cuchillos)',done:false,budget:null,paid:null},
+      {id:'i20',name:'Platos (hondos y planos)',done:false,budget:null,paid:null},
+      {id:'i21',name:'Vasos',done:false,budget:null,paid:null},
+      {id:'i22',name:'Copas',done:false,budget:null,paid:null},
+      {id:'i23',name:'Set de cuchillos de cocina',done:false,budget:null,paid:null},
+      {id:'i24',name:'Tabla de picar',done:false,budget:null,paid:null},
+      {id:'i25',name:'Ollas (2–3 tamaños)',done:false,budget:null,paid:null},
+      {id:'i26',name:'Sartén',done:false,budget:null,paid:null},
+      {id:'i27',name:'Utensilios (espátula, cucharón, pinza)',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i28',name:'Bowls para mezclar',done:false,budget:null,paid:null},
+      {id:'i29',name:'Recipientes (tuppers)',done:false,budget:null,paid:null},
+      {id:'i30',name:'Abrelatas / sacacorchos',done:false,budget:null,paid:null},
+      {id:'i31',name:'Escurridor de platos',done:false,budget:null,paid:null},
+      {id:'i32',name:'Manteles individuales',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s6',icon:'zap',weight:10,name:'Electrodomésticos',groups:[
+    {label:'Esenciales',items:[
+      {id:'i33',name:'Licuadora',done:false,budget:null,paid:null},
+      {id:'i34',name:'Plancha de ropa',done:false,budget:null,paid:null},
+      {id:'i35',name:'Secadora de cabello',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i36',name:'Cafetera',done:false,budget:null,paid:null},
+      {id:'i37',name:'Tostadora',done:false,budget:null,paid:null},
+      {id:'i38',name:'Hervidor eléctrico',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s7',icon:'droplets',weight:10,name:'Limpieza & Mantenimiento',groups:[
+    {label:'Esenciales',items:[
+      {id:'i39',name:'Escoba',done:false,budget:null,paid:null},
+      {id:'i40',name:'Trapeador / mop',done:false,budget:null,paid:null},
+      {id:'i41',name:'Balde',done:false,budget:null,paid:null},
+      {id:'i42',name:'Productos de limpieza',done:false,budget:null,paid:null},
+      {id:'i43',name:'Basurero(s)',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i44',name:'Aspiradora',done:false,budget:null,paid:null},
+      {id:'i45',name:'Guantes de limpieza',done:false,budget:null,paid:null},
+      {id:'i46',name:'Organizadores',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s8',icon:'bath',weight:10,name:'Baño',groups:[
+    {label:'Esenciales',items:[
+      {id:'i47',name:'Toallas (cuerpo y manos)',done:false,budget:null,paid:null},
+      {id:'i48',name:'Cortina de baño',done:false,budget:null,paid:null},
+      {id:'i49',name:'Alfombra de baño',done:false,budget:null,paid:null},
+      {id:'i50',name:'Papelera',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i51',name:'Dispensador de jabón',done:false,budget:null,paid:null},
+      {id:'i52',name:'Porta cepillos',done:false,budget:null,paid:null},
+      {id:'i53',name:'Organizadores',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s9',icon:'shirt',weight:10,name:'Ropa & Lavado',groups:[
+    {label:'Esenciales',items:[
+      {id:'i54',name:'Cesto de ropa sucia',done:false,budget:null,paid:null},
+      {id:'i55',name:'Ganchos (perchas)',done:false,budget:null,paid:null},
+      {id:'i56',name:'Tabla de planchar',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i57',name:'Organizadores de clóset',done:false,budget:null,paid:null},
+      {id:'i58',name:'Bolsas de lavandería',done:false,budget:null,paid:null},
+    ]}
+  ]},
+  {id:'s10',icon:'lightbulb',weight:10,name:'Generales del Hogar',groups:[
+    {label:'Esenciales',items:[
+      {id:'i59',name:'Extensiones eléctricas / regletas',done:false,budget:null,paid:null},
+      {id:'i60',name:'Focos adicionales',done:false,budget:null,paid:null},
+    ]},
+    {label:'Complementarios',items:[
+      {id:'i61',name:'Lámparas adicionales',done:false,budget:null,paid:null},
+      {id:'i62',name:'Velas decorativas',done:false,budget:null,paid:null},
+      {id:'i63',name:'Difusor de aroma',done:false,budget:null,paid:null},
+      {id:'i64',name:'Plantas interiores',done:false,budget:null,paid:null},
+    ]}
+  ]},
+]};
+
+/* ══════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════ */
+const SK = 'apt_infinito_react_v1';
+const uid = () => '_' + Math.random().toString(36).slice(2, 9);
+const fmt = n => n ? 'L ' + Number(n).toLocaleString('es-HN', {minimumFractionDigits:0,maximumFractionDigits:0}) : 'L 0';
+const fmtInput = n => n ? Math.round(n).toLocaleString('es-HN') : '';
+
+function secStats(s) {
+  let t=0,d=0,b=0,p=0,et=0,ed=0;
+  for (const g of s.groups) {
+    const ess = g.label === 'Esenciales';
+    for (const it of g.items) {
+      t++; if(it.done) d++;
+      b += parseFloat(it.budget)||0;
+      p += parseFloat(it.paid)||0;
+      if(ess){et++;if(it.done)ed++;}
+    }
+  }
+  return { total:t, done:d, pct:t?Math.round(d/t*100):0, budget:b, paid:p, essComplete:et>0&&ed===et };
+}
+
+function globalStats(sections) {
+  let t=0,d=0,b=0,p=0,weightedPct=0;
+  const totalWeight = sections.reduce((s,x)=>s+(x.weight||10),0)||1;
+  for (const s of sections){
+    const st=secStats(s);
+    t+=st.total;d+=st.done;b+=st.budget;p+=st.paid;
+    const w=(s.weight||10)/totalWeight;
+    weightedPct += st.pct * w;
+  }
+  return {total:t,done:d,pct:Math.round(weightedPct),budget:b,paid:p,secs:sections.length};
+}
+
+function loadState() {
+  try {
+    const r = localStorage.getItem(SK);
+    if (r) {
+      const s = JSON.parse(r);
+      for (const sec of s.sections) {
+        if (!sec.icon) sec.icon = 'home';
+        if (sec.weight === undefined) sec.weight = 10;
+        for (const g of sec.groups) for (const it of g.items) {
+          if (it.budget===undefined) it.budget=null;
+          if (it.paid===undefined) it.paid=null;
+        }
+      }
+      return s;
+    }
+  } catch {}
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+
+/* ══════════════════════════════════════════════
+   CONTEXT MENU (portal-like using state)
+══════════════════════════════════════════════ */
+function CtxMenu({ x, y, items, onClose }) {
+  const menuRef = useRef(null);
+  const [confirming, setConfirming] = useState(null); // index of danger item awaiting confirm
+
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    const timer = setTimeout(() => {
+      document.addEventListener('pointerdown', handleOutside);
+    }, 50);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('pointerdown', handleOutside);
+    };
+  }, [onClose]);
+
+  return (
+    <div ref={menuRef} className="ctx-menu" style={{ top: y, left: x }}>
+      {confirming !== null ? (
+        // Inline confirm state
+        <div style={{padding:'10px 12px'}}>
+          <div style={{fontSize:12,color:'#f0f0f5',marginBottom:10,fontWeight:500}}>
+            ¿Confirmar eliminación?
+          </div>
+          <div style={{display:'flex',gap:6}}>
+            <button className="ctx-item" style={{flex:1,justifyContent:'center',background:'rgba(255,255,255,0.05)',borderRadius:7}}
+              onPointerDown={e=>e.stopPropagation()}
+              onClick={e=>{e.stopPropagation();setConfirming(null);}}>
+              Cancelar
+            </button>
+            <button className="ctx-item danger" style={{flex:1,justifyContent:'center',background:'rgba(255,77,106,0.15)',borderRadius:7}}
+              onPointerDown={e=>e.stopPropagation()}
+              onClick={e=>{e.stopPropagation();items[confirming].action();onClose();}}>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      ) : (
+        items.map((item, i) =>
+          item === 'divider' ? <div key={i} className="ctx-div" /> :
+          <button key={i} className={`ctx-item${item.danger?' danger':''}`}
+            onPointerDown={e => e.stopPropagation()}
+            onClick={e => {
+              e.stopPropagation();
+              if (item.danger) { setConfirming(i); }
+              else { item.action(); onClose(); }
+            }}>
+            {item.icon && <IconSvg id={item.icon} size={14} />}
+            {item.label}
+          </button>
+        )
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   PRICE INPUT
+══════════════════════════════════════════════ */
+function PriceInput({ value, onChange, tag, tagClass }) {
+  const [display, setDisplay] = useState(fmtInput(value));
+  useEffect(() => { setDisplay(fmtInput(value)); }, [value]);
+  return (
+    <div className="pf">
+      <span className={`pf-tag ${tagClass}`}>{tag}</span>
+      <span className="pf-cur">L</span>
+      <input
+        className="pf-input"
+        type="text"
+        inputMode="decimal"
+        placeholder="0"
+        value={display}
+        onClick={e => e.stopPropagation()}
+        onFocus={e => { e.stopPropagation(); e.target.select(); }}
+        onKeyDown={e => {
+          const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Enter','Home','End'];
+          if (!allowed.includes(e.key) && !(e.key >= '0' && e.key <= '9')) e.preventDefault();
+        }}
+        onChange={e => {
+          const raw = e.target.value.replace(/[^\d]/g, '');
+          const num = raw === '' ? null : parseInt(raw, 10);
+          setDisplay(num !== null ? num.toLocaleString('es-HN') : '');
+          onChange(num);
+        }}
+      />
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ITEM ROW
+══════════════════════════════════════════════ */
+function ItemRow({ item, sid, gl, flashDir, onToggle, onUpdatePrice, onDelete, onMove }) {
+  const b = parseFloat(item.budget)||0, p = parseFloat(item.paid)||0;
+  const diff = p - b;
+  const showDiff = b > 0 && p > 0;
+  const [ctx, setCtx] = useState(null);
+
+  const openCtx = useCallback((e) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCtx({ x: Math.min(rect.right + 6, window.innerWidth - 162), y: Math.min(rect.top, window.innerHeight - 148) });
+  }, []);
+
+  return (
+    <div className="item-outer">
+      <div className={`item-row${item.done?' done':''}${flashDir===-1?' item-flash-up':flashDir===1?' item-flash-down':''}`}
+        onClick={() => onToggle(sid, gl, item.id)}>
+        {/* Handle */}
+        <div className="item-handle" onClick={e => e.stopPropagation()}>
+          <button className="handle-btn" onClick={openCtx}>
+            <span className="dot"/><span className="dot"/><span className="dot"/>
+          </button>
+          {ctx && (
+            <CtxMenu x={ctx.x} y={ctx.y} onClose={() => setCtx(null)} items={[
+              { label:'Subir', icon:'sun', action:()=>onMove(sid,gl,item.id,-1) },
+              { label:'Bajar', icon:'moon', action:()=>onMove(sid,gl,item.id,1) },
+              'divider',
+              { label:'Eliminar', icon:'trash-2', danger:true, action:()=>onDelete(sid,gl,item.id) },
+            ]} />
+          )}
+        </div>
+        {/* Body */}
+        <div className="item-body">
+          <div className="item-name">{item.name}</div>
+          <div className="item-prices" onClick={e => e.stopPropagation()}>
+            <PriceInput value={item.budget} tagClass="b" tag="Presup."
+              onChange={v => onUpdatePrice(sid, gl, item.id, 'budget', v)} />
+            <PriceInput value={item.paid} tagClass="p" tag="Pagado"
+              onChange={v => onUpdatePrice(sid, gl, item.id, 'paid', v)} />
+            {showDiff && (
+              <span className={`diff-badge ${diff>0?'over':'save'}`}>
+                {diff>0?'+':'−'}{fmt(Math.abs(diff))}
+              </span>
+            )}
+          </div>
+        </div>
+        {/* Check */}
+        <div className="chk" onClick={e => { e.stopPropagation(); onToggle(sid, gl, item.id); }}>
+          {item.done && (
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ADD ITEM ROW
+══════════════════════════════════════════════ */
+function AddItem({ sid, gl, onAdd }) {
+  const [val, setVal] = useState('');
+  const submit = () => { if (val.trim()) { onAdd(sid, gl, val.trim()); setVal(''); } };
+  return (
+    <div className="add-zone">
+      <div className="add-row">
+        <input className="add-input" placeholder="Agregar ítem…" value={val}
+          onChange={e => setVal(e.target.value)}
+          onKeyDown={e => e.key==='Enter' && submit()} />
+        <button className="add-btn" onClick={submit}>Agregar</button>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ADD GROUP COMPONENT
+══════════════════════════════════════════════ */
+function AddGroup({ sid, onAdd }) {
+  const [open, setOpen] = useState(false);
+  const [val, setVal] = useState('');
+  if (!open) return (
+    <div style={{padding:'10px 16px',borderTop:'1px solid rgba(255,255,255,0.05)'}}>
+      <button className="sub-lbl-btn add" onClick={()=>setOpen(true)}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Nueva subsección
+      </button>
+    </div>
+  );
+  return (
+    <div className="add-group-row">
+      <input className="add-group-input" placeholder="Nombre de subsección…"
+        value={val} autoFocus
+        onChange={e=>setVal(e.target.value)}
+        onKeyDown={e=>{
+          if(e.key==='Enter'&&val.trim()){onAdd(sid,val.trim());setVal('');setOpen(false);}
+          if(e.key==='Escape'){setVal('');setOpen(false);}
+        }} />
+      <button className="add-group-btn" onClick={()=>{
+        if(val.trim()){onAdd(sid,val.trim());setVal('');setOpen(false);}
+      }}>Crear</button>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   SECTION CARD
+══════════════════════════════════════════════ */
+function SectionCard({ section, isOpen, flashDir, onToggle, onUpdateItem, onDeleteItem, onMoveItem,
+  onAddItem, onDeleteSec, onMoveSec, onDeleteGroup, onAddGroup }) {
+  const st = secStats(section);
+  const miniCirc = 2 * Math.PI * 14;
+  const miniOff  = miniCirc * (1 - st.pct / 100);
+  const ringColor = st.pct === 100 || st.essComplete ? '#00d67a' : st.pct >= 30 ? '#4f7fff' : '#ffb341';
+  const [ctx, setCtx] = useState(null);
+  const [confirmingGroup, setConfirmingGroup] = useState(null);
+  const [lastMoved, setLastMoved] = useState(null); // {id, dir}
+
+  const openCtx = useCallback((e) => {
+    e.stopPropagation();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCtx({ x: window.innerWidth - rect.right, y: rect.bottom + 6 });
+  }, []);
+
+  const hasBud = st.budget > 0, hasPaid = st.paid > 0;
+  const diff = st.paid - st.budget;
+
+  return (
+    <div className={`sec-card${isOpen?' open':''}${st.pct===100&&st.total?' complete':''}${flashDir===-1?' sec-flash-up':flashDir===1?' sec-flash-down':''}`}>
+      {/* Header */}
+      <div className="sec-hdr" onClick={() => onToggle(section.id)}>
+        <div className="sec-icon"><IconSvg id={section.icon||'home'} size={18} /></div>
+        <div className="sec-meta">
+          <div className="sec-name">{section.name}</div>
+          <div className="sec-sub">
+            {st.done}/{st.total} ítems
+            <span style={{marginLeft:6,fontSize:10,color:'#a855f7',fontWeight:600,background:'rgba(168,85,247,0.1)',borderRadius:4,padding:'1px 5px'}}>
+              {section.weight ?? 10}%
+            </span>
+          </div>
+        </div>
+        <div className="sec-right">
+          {/* Mini ring */}
+          <div className="mini-ring">
+            <svg className="mini-ring-svg" width="38" height="38" viewBox="0 0 38 38">
+              <circle fill="none" stroke="#1c1c27" strokeWidth="3.5" cx="19" cy="19" r="14"/>
+              <circle fill="none" stroke={ringColor} strokeWidth="3.5" strokeLinecap="round"
+                cx="19" cy="19" r="14"
+                strokeDasharray={miniCirc.toFixed(2)}
+                strokeDashoffset={miniOff.toFixed(2)}
+                style={{transition:'stroke-dashoffset .5s cubic-bezier(.4,0,.2,1)'}}/>
+            </svg>
+            <div className="mini-pct" style={{color:ringColor}}>{st.pct}%</div>
+          </div>
+          {/* Dots menu */}
+          <div style={{position:'relative'}} onClick={e=>e.stopPropagation()}>
+            <button className="sec-dots-btn" onClick={openCtx}>
+              <span className="dot"/><span className="dot"/><span className="dot"/>
+            </button>
+            {ctx && (
+              <CtxMenu
+                x={Math.max(4, window.innerWidth - ctx.x - 148)}
+                y={ctx.y}
+                onClose={() => setCtx(null)}
+                items={[
+                  { label:'Subir', icon:'sun', action:()=>onMoveSec(section.id,-1) },
+                  { label:'Bajar', icon:'moon', action:()=>onMoveSec(section.id,1) },
+                  'divider',
+                  { label:'Eliminar', icon:'trash-2', danger:true, action:()=>onDeleteSec(section.id) },
+                ]}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="sec-bar">
+        <div className="sec-bar-fill" style={{width:`${st.pct}%`}}/>
+      </div>
+
+      {/* Budget strip */}
+      {(hasBud || hasPaid) && (
+        <div className="sec-budget-strip">
+          {hasBud && (
+            <div className="sec-bud-chip">
+              <div className="sec-bud-chip-dot" style={{background:'#4f7fff'}}/>
+              <span className="sec-bud-chip-lbl">Presup.</span>
+              <span className="sec-bud-chip-val" style={{color:'#f0f0f5'}}>{fmt(st.budget)}</span>
+            </div>
+          )}
+          {hasPaid && (
+            <div className="sec-bud-chip">
+              <div className="sec-bud-chip-dot" style={{background:'#00d67a'}}/>
+              <span className="sec-bud-chip-lbl">Gastado</span>
+              <span className="sec-bud-chip-val" style={{color:'#00d67a'}}>{fmt(st.paid)}</span>
+            </div>
+          )}
+          {hasBud && hasPaid && st.paid > st.budget && (
+            <div className="sec-bud-chip">
+              <div className="sec-bud-chip-dot" style={{background:'#ff4d6a'}}/>
+              <span className="sec-bud-chip-lbl">Excedido</span>
+              <span className="sec-bud-chip-val" style={{color:'#ff4d6a'}}>{fmt(st.paid - st.budget)}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Body */}
+      {isOpen && (
+        <div className="sec-body">
+          {section.groups.map(g => (
+            <div key={g.label}>
+              <div className="sub-lbl-row">
+                <span className="sub-lbl">{g.label}</span>
+                {confirmingGroup === g.label ? (
+                  <div style={{display:'flex',alignItems:'center',gap:5}}>
+                    <span style={{fontSize:11,color:'#8585a0',marginRight:2}}>¿Eliminar?</span>
+                    <button className="sub-lbl-btn add"
+                      onClick={e=>{e.preventDefault();e.stopPropagation();setConfirmingGroup(null);}}>
+                      No
+                    </button>
+                    <button className="sub-lbl-btn del"
+                      style={{color:'#ff4d6a',background:'rgba(255,77,106,0.12)'}}
+                      onClick={e=>{e.preventDefault();e.stopPropagation();onDeleteGroup(section.id,g.label);setConfirmingGroup(null);}}>
+                      Sí, eliminar
+                    </button>
+                  </div>
+                ) : (
+                  <button className="sub-lbl-btn del" title="Eliminar subsección"
+                    onClick={e=>{e.preventDefault();e.stopPropagation();setConfirmingGroup(g.label);}}>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                  </button>
+                )}
+              </div>
+              {g.items.map(it => (
+                <ItemRow key={it.id} item={it} sid={section.id} gl={g.label}
+                  flashDir={lastMoved && lastMoved.id === it.id ? lastMoved.dir : null}
+                  onToggle={onUpdateItem}
+                  onUpdatePrice={(sid,gl,iid,field,v)=>onUpdateItem(sid,gl,iid,field,v)}
+                  onDelete={onDeleteItem}
+                  onMove={(sid,gl,iid,dir)=>{
+                    setLastMoved({id:iid,dir});
+                    setTimeout(()=>setLastMoved(null),450);
+                    onMoveItem(sid,gl,iid,dir);
+                  }}
+                />
+              ))}
+              <AddItem sid={section.id} gl={g.label} onAdd={onAddItem} />
+            </div>
+          ))}
+          <AddGroup sid={section.id} onAdd={onAddGroup} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   ICON PICKER MODAL
+══════════════════════════════════════════════ */
+function NewSectionModal({ onClose, onConfirm }) {
+  const [name, setName]       = useState('');
+  const [selIcon, setSelIcon] = useState(ICONS[0][0]);
+  const [search, setSearch]   = useState('');
+  const filtered = search ? ICONS.filter(ic => ic[1].toLowerCase().includes(search.toLowerCase()) || ic[0].includes(search.toLowerCase())) : ICONS;
+  const selIc = ICONS.find(x => x[0] === selIcon) || ICONS[0];
+
+  return (
+    <div className="overlay" onClick={e => e.target===e.currentTarget && onClose()}>
+      <div className="sheet">
+        <div className="sheet-pill"/>
+        <div className="sheet-title">Nueva sección</div>
+        <div className="sheet-lbl">Nombre de la sección</div>
+        <input className="sheet-input" placeholder="Ej: Terraza" value={name}
+          onChange={e=>setName(e.target.value)}
+          onKeyDown={e=>e.key==='Enter'&&name.trim()&&onConfirm(name.trim(),selIcon)} />
+        <div className="icon-picker-lbl">Elige un ícono</div>
+        <div className="icon-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input className="icon-search" placeholder="Buscar ícono…"
+            value={search} onChange={e=>setSearch(e.target.value)} />
+        </div>
+        <div className="icon-grid">
+          {filtered.map(ic => (
+            <button key={ic[0]} className={`icon-btn${ic[0]===selIcon?' sel':''}`}
+              title={ic[1]} onClick={()=>setSelIcon(ic[0])}>
+              <IconSvg id={ic[0]} size={17} />
+            </button>
+          ))}
+        </div>
+        <div className="icon-preview">
+          <div className="icon-preview-box"><IconSvg id={selIcon} size={20} /></div>
+          <div className="icon-preview-text">
+            <strong>{selIc[1]}</strong>
+            <span>Se mostrará en la sección</span>
+          </div>
+        </div>
+        <div className="sheet-btns">
+          <button className="btn-cancel" onClick={onClose}>Cancelar</button>
+          <button className="btn-confirm"
+            onClick={()=>name.trim()&&onConfirm(name.trim(),selIcon)}>
+            Crear sección
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function Toast({ msg }) {
+  if (!msg) return null;
+  return <div className="toast">{msg}</div>;
+}
+
+/* ══════════════════════════════════════════════
+   RING SVG
+══════════════════════════════════════════════ */
+function GlobalRing({ pct }) {
+  const r = 18, circ = 2 * Math.PI * r;
+  const offset = circ * (1 - pct / 100);
+  return (
+    <div className="ring-wrap">
+      <svg className="ring-svg" width="46" height="46" viewBox="0 0 46 46">
+        <defs>
+          <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4f7fff"/>
+            <stop offset="100%" stopColor="#a855f7"/>
+          </linearGradient>
+        </defs>
+        <circle fill="none" stroke="#1c1c27" strokeWidth="4" cx="23" cy="23" r={r}/>
+        <circle fill="none" stroke="url(#rg)" strokeWidth="4" strokeLinecap="round"
+          cx="23" cy="23" r={r}
+          strokeDasharray={circ.toFixed(2)}
+          strokeDashoffset={offset.toFixed(2)}
+          style={{transition:'stroke-dashoffset .8s cubic-bezier(.4,0,.2,1)'}}/>
+      </svg>
+      <div className="ring-center">{pct}%</div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   WEIGHTS MODAL
+══════════════════════════════════════════════ */
+function WeightsModal({ sections, onClose, onSave }) {
+  const [weights, setWeights] = useState(() =>
+    Object.fromEntries(sections.map(s => [s.id, s.weight ?? 10]))
+  );
+
+  const total = Object.values(weights).reduce((a,b) => a + (parseFloat(b)||0), 0);
+  const isValid = Math.round(total) === 100;
+
+  const setW = (sid, val) => {
+    const num = val === '' ? '' : Math.max(0, Math.min(100, parseFloat(val)||0));
+    setWeights(prev => ({ ...prev, [sid]: num }));
+  };
+
+  const autoBalance = () => {
+    // Distribute remaining weight equally among unlocked sections
+    const n = sections.length;
+    const base = Math.floor(100 / n);
+    const rem  = 100 - base * n;
+    const newW = {};
+    sections.forEach((s, i) => { newW[s.id] = base + (i < rem ? 1 : 0); });
+    setWeights(newW);
+  };
+
+  return (
+    <div className="weights-overlay" onClick={e => e.target===e.currentTarget && onClose()}>
+      <div className="weights-sheet">
+        <div className="sheet-pill"/>
+        <div className="sheet-title">⚙ Configuración</div>
+        <div style={{fontSize:13,fontWeight:600,color:'#8585a0',marginBottom:8,marginTop:4,textTransform:'uppercase',letterSpacing:1}}>Peso por sección</div>
+        <div style={{fontSize:12,color:'#8585a0',marginBottom:16,lineHeight:1.5}}>
+          Define cuánto influye cada sección en el avance global. Debe sumar 100%.
+        </div>
+
+        {sections.map(s => (
+          <div className="weights-row" key={s.id}>
+            <div className="weights-icon"><IconSvg id={s.icon||'home'} size={15}/></div>
+            <div className="weights-name">{s.name}</div>
+            <div className="weights-bar-wrap">
+              <div className="weights-bar-fill" style={{width:`${Math.min(100,weights[s.id]||0)}%`}}/>
+            </div>
+            <input
+              className="weights-input"
+              type="text" inputMode="decimal"
+              value={weights[s.id]}
+              onFocus={e => e.target.select()}
+              onChange={e => setW(s.id, e.target.value)}
+              onKeyDown={e => {
+                const ok = ['Backspace','Delete','ArrowLeft','ArrowRight','Tab','.',','];
+                if(!ok.includes(e.key) && !(e.key>='0'&&e.key<='9')) e.preventDefault();
+              }}
+            />
+            <span className="weights-pct-sign">%</span>
+          </div>
+        ))}
+
+        <div className="weights-total">
+          <span className="weights-total-lbl">Total</span>
+          <span className={`weights-total-val ${isValid?'ok':'err'}`}>
+            {isNaN(total)?'–':Math.round(total*10)/10}%
+            {isValid ? ' ✓' : ` (faltan ${Math.round((100-total)*10)/10}%)`}
+          </span>
+        </div>
+
+        <div className="weights-btn-row">
+          <button className="btn-cancel" onClick={autoBalance} style={{flex:1,fontSize:13}}>
+            Distribuir igual
+          </button>
+          <button className="btn-cancel" onClick={onClose} style={{flex:1}}>
+            Cancelar
+          </button>
+          <button
+            className="btn-confirm"
+            style={{flex:2, opacity: isValid?1:0.45, cursor:isValid?'pointer':'not-allowed'}}
+            onClick={() => { if(isValid) onSave(weights); }}
+          >
+            Guardar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   MAIN APP
+══════════════════════════════════════════════ */
+function App() {
+  const [sections, setSections] = useState(() => loadState().sections);
+  const [openSecs, setOpenSecs] = useState(new Set());
+  const [showModal, setShowModal] = useState(false);
+  const [showWeights, setShowWeights] = useState(false);
+  const [toast, setToast] = useState('');
+  const [lastMovedSec, setLastMovedSec] = useState(null); // {id, dir}
+  const toastRef = useRef(null);
+
+  // Persist
+  useEffect(() => {
+    try { localStorage.setItem(SK, JSON.stringify({ sections })); } catch {}
+  }, [sections]);
+
+  const showToast = useCallback((msg) => {
+    setToast(msg);
+    clearTimeout(toastRef.current);
+    toastRef.current = setTimeout(() => setToast(''), 2200);
+  }, []);
+
+  const g = globalStats(sections);
+
+  // ─── Section actions ───
+  const toggleSec = useCallback((sid) => {
+    setOpenSecs(prev => {
+      const n = new Set(prev);
+      n.has(sid) ? n.delete(sid) : n.add(sid);
+      return n;
+    });
+  }, []);
+
+  const moveSec = useCallback((sid, dir) => {
+    setLastMovedSec({id: sid, dir});
+    setTimeout(() => setLastMovedSec(null), 500);
+    setSections(prev => {
+      const arr = [...prev];
+      const idx = arr.findIndex(x => x.id === sid);
+      const ni = idx + dir;
+      if (ni < 0 || ni >= arr.length) return prev;
+      [arr[idx], arr[ni]] = [arr[ni], arr[idx]];
+      return arr;
+    });
+  }, []);
+
+  const deleteSec = useCallback((sid) => {
+    setSections(prev => {
+      const next = prev.filter(s => s.id !== sid);
+      if (next.length === 0) return next;
+      const n = next.length;
+      const base = Math.floor(100 / n);
+      const rem  = 100 - base * n;
+      return next.map((s, i) => ({ ...s, weight: base + (i < rem ? 1 : 0) }));
+    });
+    showToast('Sección eliminada');
+  }, [showToast]);
+
+  const saveWeights = useCallback((weights) => {
+    setSections(prev => prev.map(s => ({
+      ...s, weight: parseFloat(weights[s.id]) || 10
+    })));
+    setShowWeights(false);
+    showToast('Pesos actualizados');
+  }, [showToast]);
+
+  const addSec = useCallback((name, icon) => {
+    const ns = { id: uid(), icon, name, weight: 10,
+      groups: [{ label:'Esenciales', items:[] }, { label:'Complementarios', items:[] }] };
+    setSections(prev => {
+      const next = [...prev, ns];
+      // Redistribute weights equally so they always sum to 100
+      const n = next.length;
+      const base = Math.floor(100 / n);
+      const rem  = 100 - base * n;
+      return next.map((s, i) => ({ ...s, weight: base + (i < rem ? 1 : 0) }));
+    });
+    setOpenSecs(prev => new Set([...prev, ns.id]));
+    setShowModal(false);
+    showToast(`✨ ${name} creada`);
+  }, [showToast]);
+
+  // ─── Item actions ───
+  const updateItem = useCallback((sid, gl, iid, fieldOrToggle, val) => {
+    setSections(prev => prev.map(s => {
+      if (s.id !== sid) return s;
+      return { ...s, groups: s.groups.map(g => {
+        if (g.label !== gl) return g;
+        return { ...g, items: g.items.map(it => {
+          if (it.id !== iid) return it;
+          if (fieldOrToggle === 'budget' || fieldOrToggle === 'paid')
+            return { ...it, [fieldOrToggle]: val };
+          // toggle done
+          const done = !it.done;
+          if (done) showToast(`✓ ${it.name}`);
+          return { ...it, done };
+        })};
+      })};
+    }));
+  }, [showToast]);
+
+  const deleteItem = useCallback((sid, gl, iid) => {
+    setSections(prev => prev.map(s => {
+      if (s.id !== sid) return s;
+      return { ...s, groups: s.groups.map(g => {
+        if (g.label !== gl) return g;
+        return { ...g, items: g.items.filter(it => it.id !== iid) };
+      })};
+    }));
+    showToast('Eliminado');
+  }, [showToast]);
+
+  const moveItem = useCallback((sid, gl, iid, dir) => {
+    setSections(prev => prev.map(s => {
+      if (s.id !== sid) return s;
+      return { ...s, groups: s.groups.map(g => {
+        if (g.label !== gl) return g;
+        const items = [...g.items];
+        const idx = items.findIndex(x => x.id === iid);
+        const ni = idx + dir;
+        if (ni < 0 || ni >= items.length) return g;
+        [items[idx], items[ni]] = [items[ni], items[idx]];
+        return { ...g, items };
+      })};
+    }));
+  }, []);
+
+  const deleteGroup = useCallback((sid, gl) => {
+    setSections(prev => prev.map(s => {
+      if (s.id !== sid) return s;
+      return { ...s, groups: s.groups.filter(g => g.label !== gl) };
+    }));
+    showToast(`Subsección eliminada`);
+  }, [showToast]);
+
+  const addGroup = useCallback((sid, label) => {
+    setSections(prev => prev.map(s => {
+      if (s.id !== sid) return s;
+      if (s.groups.find(g => g.label === label)) return s; // no duplicates
+      return { ...s, groups: [...s.groups, { label, items: [] }] };
+    }));
+    showToast(`+ ${label}`);
+  }, [showToast]);
+
+  const addItem = useCallback((sid, gl, name) => {
+    const it = { id: uid(), name, done: false, budget: null, paid: null };
+    setSections(prev => prev.map(s => {
+      if (s.id !== sid) return s;
+      return { ...s, groups: s.groups.map(g => {
+        if (g.label !== gl) return g;
+        return { ...g, items: [...g.items, it] };
+      })};
+    }));
+    showToast(`+ ${name}`);
+  }, [showToast]);
+
+  return (
+    <>
+      <div className="app">
+        {/* HEADER */}
+        <header className="hd">
+          <div className="hd-inner">
+            <div className="hd-top">
+              <div className="hd-titles">
+                <div className="hd-eyebrow">Proyecto · Amueblamiento</div>
+                <div className="hd-title">Apartamento, <span>Torre Infinito</span></div>
+              </div>
+              <div className="ring-block">
+                <GlobalRing pct={g.pct} />
+                <div className="pct-col">
+                  <div className="pct-big">{g.pct}%</div>
+                  <div className="pct-sub">{g.done} de {g.total} ítems</div>
+                </div>
+              </div>
+            </div>
+            <div className="prog-bar">
+              <div className="prog-fill" style={{width:`${g.pct}%`}}/>
+            </div>
+            <div className="metrics">
+              <div className="metric"><div className="metric-lbl">Hecho</div><div className="metric-val g">{g.done}</div></div>
+              <div className="metric"><div className="metric-lbl">Pend.</div><div className="metric-val">{g.total-g.done}</div></div>
+
+              <div className="metric"><div className="metric-lbl">Presup.</div><div className="metric-val b">{fmt(g.budget)}</div></div>
+              <div className="metric"><div className="metric-lbl">Gastado</div><div className={`metric-val ${g.paid>g.budget&&g.budget>0?'r':'g'}`}>{fmt(g.paid)}</div></div>
+            </div>
+          </div>
+        </header>
+
+        <div className="sec-divider">Secciones</div>
+
+        {/* SECTIONS */}
+        {sections.length === 0 ? (
+          <div className="empty">
+            <div className="empty-icon">📋</div>
+            Sin secciones. Agrega una con el botón +
+          </div>
+        ) : sections.map(s => (
+          <SectionCard key={s.id} section={s} isOpen={openSecs.has(s.id)}
+            flashDir={lastMovedSec && lastMovedSec.id === s.id ? lastMovedSec.dir : null}
+            onToggle={toggleSec}
+            onUpdateItem={updateItem}
+            onDeleteItem={deleteItem}
+            onMoveItem={moveItem}
+            onAddItem={addItem}
+            onDeleteSec={deleteSec}
+            onMoveSec={moveSec}
+            onDeleteGroup={deleteGroup}
+            onAddGroup={addGroup}
+          />
+        ))}
+      </div>
+
+      {/* Settings FAB */}
+      <button className="fab-settings" onClick={() => setShowWeights(true)} title="Configurar pesos">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+
+      {/* FAB */}
+      <button className="fab" onClick={() => setShowModal(true)}>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Nueva sección
+      </button>
+
+      {/* MODAL */}
+      {showModal && <NewSectionModal onClose={() => setShowModal(false)} onConfirm={addSec} />}
+
+      {/* WEIGHTS MODAL */}
+      {showWeights && <WeightsModal sections={sections} onClose={() => setShowWeights(false)} onSave={saveWeights} />}
+
+      {/* TOAST */}
+      <Toast msg={toast} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+  </script>
+</body>
+</html>
