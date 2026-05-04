@@ -736,7 +736,7 @@ function AddGroup({ sid, onAdd }) {
    SECTION CARD
 ══════════════════════════════════════════════ */
 function SectionCard({ section, isOpen, flashDir, onToggle, onUpdateItem, onDeleteItem, onMoveItem,
-  onAddItem, onDeleteSec, onMoveSec, onDeleteGroup, onAddGroup }) {
+  onAddItem, onDeleteSec, onMoveSec, onDeleteGroup, onAddGroup, onRenameSec }) {
   const st = secStats(section);
   const miniCirc = 2 * Math.PI * 14;
   const miniOff  = miniCirc * (1 - st.pct / 100);
@@ -744,6 +744,8 @@ function SectionCard({ section, isOpen, flashDir, onToggle, onUpdateItem, onDele
   const [ctx, setCtx] = useState(null);
   const [confirmingGroup, setConfirmingGroup] = useState(null);
   const [lastMoved, setLastMoved] = useState(null); // {id, dir}
+  const [renaming, setRenaming] = useState(false);
+  const [renameVal, setRenameVal] = useState(section.name);
 
   const openCtx = useCallback((e) => {
     e.stopPropagation();
@@ -760,11 +762,39 @@ function SectionCard({ section, isOpen, flashDir, onToggle, onUpdateItem, onDele
       <div className="sec-hdr" onClick={() => onToggle(section.id)}>
         <div className="sec-icon"><IconSvg id={section.icon||'home'} size={18} /></div>
         <div className="sec-meta">
-          <div className="sec-name">{section.name}</div>
+          {renaming ? (
+            <div style={{display:'flex',gap:6,alignItems:'center'}} onClick={e=>e.stopPropagation()}>
+              <input
+                autoFocus
+                value={renameVal}
+                onChange={e=>setRenameVal(e.target.value)}
+                onKeyDown={e=>{
+                  if(e.key==='Enter'&&renameVal.trim()){onRenameSec(section.id,renameVal.trim());setRenaming(false);}
+                  if(e.key==='Escape'){setRenaming(false);}
+                }}
+                style={{
+                  background:'rgba(255,255,255,0.07)',border:'1px solid rgba(168,85,247,0.5)',
+                  borderRadius:8,padding:'4px 10px',color:'#fff',
+                  fontFamily:'Geist,sans-serif',fontSize:14,fontWeight:600,
+                  outline:'none',width:140
+                }}
+              />
+              <button onClick={e=>{e.stopPropagation();if(renameVal.trim()){onRenameSec(section.id,renameVal.trim());setRenaming(false);}}}
+                style={{background:'rgba(168,85,247,0.2)',border:'1px solid rgba(168,85,247,0.4)',borderRadius:6,padding:'4px 10px',color:'#a855f7',fontFamily:'Geist,sans-serif',fontSize:12,fontWeight:600,cursor:'pointer'}}>
+                OK
+              </button>
+              <button onClick={e=>{e.stopPropagation();setRenaming(false);}}
+                style={{background:'none',border:'none',color:'#4a4a60',cursor:'pointer',fontSize:18,lineHeight:1}}>
+                ×
+              </button>
+            </div>
+          ) : (
+            <div className="sec-name">{section.name}</div>
+          )}
           <div className="sec-sub">
             {st.done}/{st.total} ítems
             <span style={{marginLeft:6,fontSize:10,color:'#a855f7',fontWeight:600,background:'rgba(168,85,247,0.1)',borderRadius:4,padding:'1px 5px'}}>
-              {section.weight ?? 10}%
+              {section.weight ?? 0}%
             </span>
           </div>
         </div>
@@ -794,6 +824,8 @@ function SectionCard({ section, isOpen, flashDir, onToggle, onUpdateItem, onDele
                 items={[
                   { label:'Subir', icon:'sun', action:()=>onMoveSec(section.id,-1) },
                   { label:'Bajar', icon:'moon', action:()=>onMoveSec(section.id,1) },
+                  'divider',
+                  { label:'Renombrar', icon:'tag', action:()=>{ setRenameVal(section.name); setRenaming(true); } },
                   'divider',
                   { label:'Eliminar', icon:'trash-2', danger:true, action:()=>onDeleteSec(section.id) },
                 ]}
@@ -1161,6 +1193,11 @@ function App() {
     showToast('Sección eliminada');
   }, [showToast]);
 
+  const renameSec = useCallback((sid, newName) => {
+    setSections(prev => prev.map(s => s.id === sid ? { ...s, name: newName } : s));
+    showToast(`✏ ${newName}`);
+  }, [showToast]);
+
   const saveWeights = useCallback((weights) => {
     setSections(prev => prev.map(s => ({
       ...s, weight: parseFloat(weights[s.id]) || 10
@@ -1170,16 +1207,9 @@ function App() {
   }, [showToast]);
 
   const addSec = useCallback((name, icon) => {
-    const ns = { id: uid(), icon, name, weight: 10,
+    const ns = { id: uid(), icon, name, weight: 0,
       groups: [{ label:'Esenciales', items:[] }, { label:'Complementarios', items:[] }] };
-    setSections(prev => {
-      const next = [...prev, ns];
-      // Redistribute weights equally so they always sum to 100
-      const n = next.length;
-      const base = Math.floor(100 / n);
-      const rem  = 100 - base * n;
-      return next.map((s, i) => ({ ...s, weight: base + (i < rem ? 1 : 0) }));
-    });
+    setSections(prev => [...prev, ns]);
     setOpenSecs(prev => new Set([...prev, ns.id]));
     setShowModal(false);
     showToast(`✨ ${name} creada`);
@@ -1324,6 +1354,7 @@ function App() {
             onMoveSec={moveSec}
             onDeleteGroup={deleteGroup}
             onAddGroup={addGroup}
+            onRenameSec={renameSec}
           />
         ))}
       </div>
