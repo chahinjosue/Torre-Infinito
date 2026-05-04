@@ -501,12 +501,17 @@ function globalStats(sections) {
 }
 
 function migrateState(s) {
+  if (!s || !Array.isArray(s.sections)) return JSON.parse(JSON.stringify(DEFAULTS));
   for (const sec of s.sections) {
     if (!sec.icon) sec.icon = 'home';
     if (sec.weight === undefined) sec.weight = 10;
-    for (const g of sec.groups) for (const it of g.items) {
-      if (it.budget===undefined) it.budget=null;
-      if (it.paid===undefined) it.paid=null;
+    if (!Array.isArray(sec.groups)) sec.groups = [];
+    for (const g of sec.groups) {
+      if (!Array.isArray(g.items)) g.items = [];
+      for (const it of g.items) {
+        if (it.budget === undefined) it.budget = null;
+        if (it.paid   === undefined) it.paid   = null;
+      }
     }
   }
   return s;
